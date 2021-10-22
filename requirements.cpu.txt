@@ -1,0 +1,8 @@
+--find-links https://download.pytorch.org/whl/torch_stable.html
+
+matminer==0.6.5
+torch==1.6.0+cpu
+torchvision==0.7.0+cpu
+molar
+pydantic[email]
+.
