@@ -27,5 +27,6 @@ Streamlit frontend uses `requirements.txt`
 Run locally with `streamlit run app.py`
 
 ### RHEED jpg data
+* Pre-processed, dimensionality reduced images are in `./data/` saved as `npz` files. They can be loaded as shown in `Rheed-viz.ipynb`
 * Process AVI movies by installing ffmpeg and doing `ffmpeg -i MovieName.avi -vf  fps=<num_fps>  c01_%04d.jpg -hide_banner`
-* https://figshare.com/s/73b8ab6cb131acbbe9d4
+* Raw jpgs: https://figshare.com/s/73b8ab6cb131acbbe9d4
