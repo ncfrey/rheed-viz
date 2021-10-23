@@ -6,6 +6,8 @@ import zipfile
 import numpy as np
 import base64
 import json
+from PIL import Image
+import io
 
 # needs to correspond to molarcli install local parameters
 local_address = "http://localhost:8000"
@@ -57,36 +59,40 @@ print(db_info[db_info.table_name == "numerical_data"])
 
 event = user_client.create_entry(type="molecule_type", data={"name": "brain catalyst"})
 
-event = user_client.create_entry(type="numerical_data", data={"data": [0.]})
+# event = user_client.create_entry(type="numerical_data", data={"data": [0.]})
 ####
 
 
-# url = 'https://figshare.com/ndownloader/files/31170988?private_link=73b8ab6cb131acbbe9d4'
-# filehandle, _ = urllib.request.urlretrieve(url)
-# zip_file_object = zipfile.ZipFile(filehandle, 'r')
+url = 'https://figshare.com/ndownloader/files/31170988?private_link=73b8ab6cb131acbbe9d4'
+filehandle, _ = urllib.request.urlretrieve(url)
+zip_file_object = zipfile.ZipFile(filehandle, 'r')
 
-# for fi, ff in enumerate(zip_file_object.namelist()):
+for fi, ff in enumerate(zip_file_object.namelist()):
 
-#     if '.jpg' in ff:
+    if '.jpg' in ff:
 
-#         file = zip_file_object.open(ff)
-#         # content = np.asarray(Image.open(io.BytesIO(file.read())))
-#         content = base64.encodebytes(file.read())
-#         # print(content)
-#         # print(type(content))
-#         timeindex = int(ff.split('_')[-1].split('.jpg')[0].lstrip('0'))
-#         # shape = content.shape
-#         # print(content.flatten().squeeze().tolist())
+        file = zip_file_object.open(ff)
+        content = np.asarray(Image.open(io.BytesIO(file.read())))
+        # content = base64.encodebytes(file.read())
+        # print(content)
+        # print(type(content))
+        timeindex = int(ff.split('_')[-1].split('.jpg')[0].lstrip('0'))
+        shape = content.shape
+        # print(content.flatten().squeeze().tolist())
 
-#         print(type(timeindex))
-#         print(type(content.decode()))
-#         print(type(ff))
+        print(type(timeindex))
+        print(type(content))
+        print(type(content[0]))
+        print(type(ff))
 
-#         event = user_client.create_entry(type="numerical_data", 
-#                                         data={"data": timeindex, 
-#                                                 "metadata": {"filename": ff, "samplename": "FeSe", "bytestring": content.decode(),}
-#                                                 })
+        event = user_client.create_entry(type="conformer", 
+                                        data={"atomic_numbers": [26, 34], # iron and selenium
+                                                "x": content.flatten().squeeze().tolist(),
+                                                "y": [0.],
+                                                "z": [0.],
+                                                "metadata": {"filename": ff, "samplename": "FeSe", "timeindex": timeindex, "shape": shape} # "bytestring": content.decode(),}
+                                                })
 
-#         print(event)
+        # print(event)
 
-#         sys.exit()
+        # sys.exit()
