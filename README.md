@@ -11,7 +11,7 @@ molarcli install local
 Where do you want to install Molar 🦷 (./molar_data_dir):   
 Password for Postgres admin: **rheed**  
 Server url (http://localhost):  
-Allow the backend to send email? [y/n]: **n** 
+Allow the backend to send email? [y/n]: **n**  
 Backend port (8000):  
 Number of workers for the backend (2):  
 Full name: **default**  
