@@ -9,4 +9,5 @@ Streamlit frontend uses `requirements.txt`
 Run locally with `streamlit run app.py`
 
 ### RHEED jpg data
+* Process AVI movies by installing ffmpeg and doing `ffmpeg -i MovieName.avi -vf  fps=<num_fps>  c01_%04d.jpg -hide_banner`
 * https://figshare.com/s/73b8ab6cb131acbbe9d4
