@@ -4,6 +4,7 @@ from molar import ClientConfig, Client
 import urllib.request
 import zipfile
 import numpy as np
+import pandas as pd
 import base64
 import json
 from PIL import Image
@@ -94,13 +95,36 @@ for fi, ff in enumerate(zip_file_object.namelist()):
                                                 "x": content.flatten().squeeze().tolist(),
                                                 "y": [0.],
                                                 "z": [0.],
-                                                "metadata": {"filename": ff, "samplename": "FeSe", "timeindex": timeindex, "shape": shape} # "bytestring": content.decode(),}
+                                                "metadata": {"data_type": "raw", "filename": ff, "samplename": "FeSe", "timeindex": timeindex, "shape": shape} # "bytestring": content.decode(),}
                                                 })
 
-    if fi > 10:
+    if fi > 5:
         # only store a few raw images
         break
 
         # print(event)
 
         # sys.exit()
+
+# Compressed images using principal components
+data = np.load('data/pca.npz')
+components = data['arr_0']
+
+event = user_client.create_entry(type="conformer", 
+                            data={"atomic_numbers": [26, 34], # iron and selenium
+                                    "x": components[0].tolist(),
+                                    "y": components[1].tolist(),
+                                    "z": components[2].tolist(),
+                                    "metadata": {"data_type": "pca_image", "samplename": "FeSe"}
+                                    })
+
+# Principal components versus time
+pc_df = pd.read_csv('data/pca.csv')
+event = user_client.create_entry(type="conformer", 
+                            data={"atomic_numbers": [26, 34], # iron and selenium
+                                    "x": pc_df['PC1'].values.tolist(),
+                                    "y": pc_df['PC2'].values.tolist(),
+                                    "z": pc_df['PC3'].values.tolist(),
+                                    "metadata": {"data_type": "pca_time", "samplename": "FeSe"}
+                                    })
+
