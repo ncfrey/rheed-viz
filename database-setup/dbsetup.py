@@ -49,34 +49,44 @@ admin_client.approve_database(database_name)
 
 # print(admin_client.test_token())
 # print(admin_client.get_alembic_revisions())
-print(user_client.get_database_information())
+db_info = user_client.get_database_information()
 
-url = 'https://figshare.com/ndownloader/files/31170988?private_link=73b8ab6cb131acbbe9d4'
-filehandle, _ = urllib.request.urlretrieve(url)
-zip_file_object = zipfile.ZipFile(filehandle, 'r')
+print(db_info[db_info.table_name == "molecule_type"])
+print(db_info[db_info.table_name == "numerical_data"])
 
-for fi, ff in enumerate(zip_file_object.namelist()):
 
-    if '.jpg' in ff:
+event = user_client.create_entry(type="molecule_type", data={"name": "brain catalyst"})
 
-        file = zip_file_object.open(ff)
-        # content = np.asarray(Image.open(io.BytesIO(file.read())))
-        content = base64.encodebytes(file.read())
-        # print(content)
-        # print(type(content))
-        timeindex = int(ff.split('_')[-1].split('.jpg')[0].lstrip('0'))
-        # shape = content.shape
-        # print(content.flatten().squeeze().tolist())
+event = user_client.create_entry(type="numerical_data", data={"data": [0.]})
+####
 
-        print(type(timeindex))
-        print(type(content.decode()))
-        print(type(ff))
 
-        event = user_client.create_entry(type="numerical_data", 
-                                        data={"data": timeindex, 
-                                                "metadata": json.dumps({"filename": ff, "samplename": "FeSe", "bytestring": content.decode(),}) #  "shape": shape}
-                                                })
+# url = 'https://figshare.com/ndownloader/files/31170988?private_link=73b8ab6cb131acbbe9d4'
+# filehandle, _ = urllib.request.urlretrieve(url)
+# zip_file_object = zipfile.ZipFile(filehandle, 'r')
 
-        print(event)
+# for fi, ff in enumerate(zip_file_object.namelist()):
 
-        sys.exit()
+#     if '.jpg' in ff:
+
+#         file = zip_file_object.open(ff)
+#         # content = np.asarray(Image.open(io.BytesIO(file.read())))
+#         content = base64.encodebytes(file.read())
+#         # print(content)
+#         # print(type(content))
+#         timeindex = int(ff.split('_')[-1].split('.jpg')[0].lstrip('0'))
+#         # shape = content.shape
+#         # print(content.flatten().squeeze().tolist())
+
+#         print(type(timeindex))
+#         print(type(content.decode()))
+#         print(type(ff))
+
+#         event = user_client.create_entry(type="numerical_data", 
+#                                         data={"data": timeindex, 
+#                                                 "metadata": {"filename": ff, "samplename": "FeSe", "bytestring": content.decode(),}
+#                                                 })
+
+#         print(event)
+
+#         sys.exit()
