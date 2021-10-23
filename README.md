@@ -15,7 +15,8 @@ Backend port (8000):
 Number of workers for the backend (2):  
 Full name: **default**  
 Email: **default@rheed.com**  
-Password: **rheed** 
+Password: **rheed**   
+Do you want to start it now? [y/n]: **y**
 
 
 If you get a permissions error on linux, you can change the user group of docker using the below command.
