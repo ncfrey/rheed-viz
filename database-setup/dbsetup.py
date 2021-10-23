@@ -65,7 +65,7 @@ event = user_client.create_entry(type="molecule_type", data={"name": "brain cata
 
 ### storing raw images
 
-## TODO: change to comprressed arrays
+## TODO: change to storing comprressed arrays
 
 url = 'https://figshare.com/ndownloader/files/31170988?private_link=73b8ab6cb131acbbe9d4'
 filehandle, _ = urllib.request.urlretrieve(url)
@@ -96,6 +96,10 @@ for fi, ff in enumerate(zip_file_object.namelist()):
                                                 "z": [0.],
                                                 "metadata": {"filename": ff, "samplename": "FeSe", "timeindex": timeindex, "shape": shape} # "bytestring": content.decode(),}
                                                 })
+
+    if fi > 10:
+        # only store a few raw images
+        break
 
         # print(event)
 
