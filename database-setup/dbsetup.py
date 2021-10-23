@@ -63,6 +63,10 @@ event = user_client.create_entry(type="molecule_type", data={"name": "brain cata
 ####
 
 
+### storing raw images
+
+## TODO: change to comprressed arrays
+
 url = 'https://figshare.com/ndownloader/files/31170988?private_link=73b8ab6cb131acbbe9d4'
 filehandle, _ = urllib.request.urlretrieve(url)
 zip_file_object = zipfile.ZipFile(filehandle, 'r')
