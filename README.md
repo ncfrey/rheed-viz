@@ -3,7 +3,7 @@
 Database, dimensionality reduction, and visualization dashboard for RHEED data
 
 ### Environment Setup
-To setup the environment, run conda env update --file env.cpu.yml, which will create a conda environment called rheed-viz
+To setup the environment, run `conda env update --file env.cpu.yml`, which will create a conda environment called rheed-viz
 
 Next setup the default local database, responding to the commands as follows (blank means hit enter):
 
@@ -19,8 +19,8 @@ Email: **default@rheed.com**
 Password: **rheed**   
 Do you want to start it now? [y/n]: **y**
 
-If you get a permissions error on linux, you can change the user group of docker using the below command.
-sudo usermod -G docker your_username; su - your_username
+If you get a permissions error on linux, you can change the user group of docker using the following command:
+`sudo usermod -G docker your_username; su - your_username`
 
 ### Start the RHEED database
 `python database_setup/dbsetup.py`
