@@ -3,7 +3,7 @@
 matminer==0.6.5
 torch
 torchvision
-molar
+molar[backend]
 pydantic[email]
 streamlit
 .
