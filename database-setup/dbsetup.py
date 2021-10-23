@@ -62,16 +62,20 @@ for fi, ff in enumerate(zip_file_object.namelist()):
         file = zip_file_object.open(ff)
         # content = np.asarray(Image.open(io.BytesIO(file.read())))
         content = base64.encodebytes(file.read())
-        print(content)
-        print(type(content))
+        # print(content)
+        # print(type(content))
         timeindex = int(ff.split('_')[-1].split('.jpg')[0].lstrip('0'))
         # shape = content.shape
         # print(content.flatten().squeeze().tolist())
 
+        print(type(timeindex))
+        print(type(content.decode()))
+        print(type(ff))
+
         event = user_client.create_entry(type="numerical_data", data={"data": timeindex, 
-                                                                    "metadata": {"filename": ff, "samplename": "FeSe", "bytestring": json.dumps(content.decode()),} #  "shape": shape}
+                                                                    "metadata": json.dumps({"filename": ff, "samplename": "FeSe", "bytestring": content.decode(),}) #  "shape": shape}
                                                                         })
 
-        print(content)
+        print(event)
 
         sys.exit()
