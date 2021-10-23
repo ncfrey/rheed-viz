@@ -7,7 +7,7 @@ To setup the environment, run conda env update --file env.cpu.yml, which will cr
 Next setup the default local database, responding to the commands as follows (blank means hit enter):
 
 molarcli install local  
-Where do you want to install Molar 🦷 (./molar_data_dir): 
+Where do you want to install Molar 🦷 (./molar_data_dir):   
 Password for Postgres admin: **rheed**  
 Server url (http://localhost):  
 Allow the backend to send email? [y/n]: **n** 
