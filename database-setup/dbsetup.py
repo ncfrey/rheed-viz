@@ -72,9 +72,10 @@ for fi, ff in enumerate(zip_file_object.namelist()):
         print(type(content.decode()))
         print(type(ff))
 
-        event = user_client.create_entry(type="numerical_data", data={"data": timeindex, 
-                                                                    "metadata": json.dumps({"filename": ff, "samplename": "FeSe", "bytestring": content.decode(),}) #  "shape": shape}
-                                                                        })
+        event = user_client.create_entry(type="numerical_data", 
+                                        data={"data": timeindex, 
+                                                "metadata": json.dumps({"filename": ff, "samplename": "FeSe", "bytestring": content.decode(),}) #  "shape": shape}
+                                                })
 
         print(event)
 
