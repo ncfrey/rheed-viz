@@ -7,3 +7,6 @@ To setup the environment, run conda env update --file env.cpu.yml, which will cr
 ### Launching app
 Streamlit frontend uses `requirements.txt`
 Run locally with `streamlit run app.py`
+
+### RHEED jpg data
+* https://figshare.com/s/73b8ab6cb131acbbe9d4
