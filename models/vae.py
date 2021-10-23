@@ -167,7 +167,7 @@ class VRAE(BaseEstimator, nn.Module):
                  n_epochs=5, dropout_rate=0., optimizer='Adam', loss='MSELoss',
                  cuda=False, print_every=100, clip=True, max_grad_norm=5, dload='.'):
 
-        super(VRAE, self).__init__()
+        super().__init__()
 
 
         self.dtype = torch.FloatTensor
@@ -468,4 +468,5 @@ class VRAE(BaseEstimator, nn.Module):
         :return: None
         """
         self.is_fitted = True
-        self.load_state_dict(torch.load(PATH))
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.load_state_dict(torch.load(PATH, map_location=torch.device(device)))

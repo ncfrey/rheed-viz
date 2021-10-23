@@ -29,7 +29,7 @@ def plot_clustering(z_run, labels, engine ='plotly', download = False, folder_na
 
         colors = [hex_colors[int(i)] for i in labels]
 
-        z_run_pca = TruncatedSVD(n_components=3).fit_transform(z_run)
+        z_run_pca = TruncatedSVD(n_components=2).fit_transform(z_run)
         z_run_tsne = TSNE(perplexity=80, min_grad_norm=1E-12, n_iter=3000).fit_transform(z_run)
 
         trace = Scatter(
@@ -70,7 +70,7 @@ def plot_clustering(z_run, labels, engine ='plotly', download = False, folder_na
 
         colors = [hex_colors[int(i)] for i in labels]
 
-        z_run_pca = TruncatedSVD(n_components=3).fit_transform(z_run)
+        z_run_pca = TruncatedSVD(n_components=2).fit_transform(z_run)
         z_run_tsne = TSNE(perplexity=80, min_grad_norm=1E-12, n_iter=3000).fit_transform(z_run)
 
         plt.scatter(z_run_pca[:, 0], z_run_pca[:, 1], c=colors, marker='*', linewidths=0)
