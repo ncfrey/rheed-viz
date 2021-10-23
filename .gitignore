@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# database
+molar_data_dir/
+
 # Linux trash
 *.un~
 
