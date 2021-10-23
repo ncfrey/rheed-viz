@@ -1,5 +1,14 @@
 import sys
 from pathlib import Path
+from molar import ClientConfig, Client
+
+admin_cfg = ClientConfig(server_url="http://localhost:8000",
+                         email="default@rheed.com",
+                         password="rheed",
+                         database_name="main")
+admin_client = Client(admin_cfg)
+
+admin_client.test_token()
 
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
@@ -51,6 +60,8 @@ def draw_main_page():
     st.write(intro)
 
     st.write(release_notes)
+
+    st.write(admin_client.test_token())
 
 
 # Draw sidebar
