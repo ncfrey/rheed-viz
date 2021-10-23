@@ -22,6 +22,9 @@ Do you want to start it now? [y/n]: **y**
 If you get a permissions error on linux, you can change the user group of docker using the below command.
 sudo usermod -G docker your_username; su - your_username
 
+### Start the RHEED database
+`python database_setup/dbsetup.py`
+
 ### Launching app
 Streamlit frontend uses `requirements.txt`
 Run locally with `streamlit run app.py`
