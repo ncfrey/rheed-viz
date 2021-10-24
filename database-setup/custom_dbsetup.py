@@ -19,7 +19,7 @@ default_domain = "rheed.com"
 default_user_name = "user1"
 
 # name the database here
-database_name = "compchem"
+database_name = "test"
 revision_to_use = database_name + "@d480185c54df"
 
 # create default admin config
@@ -54,11 +54,13 @@ admin_client.approve_database(database_name)
 # print(admin_client.get_alembic_revisions())
 db_info = user_client.get_database_information()
 
-# print(db_info[db_info.table_name == "molecule_type"])
-# print(db_info[db_info.table_name == "numerical_data"])
+print(db_info[db_info.table_name == "sample"])
+print(db_info[db_info.table_name == "rheed"])
 
 
-event = user_client.create_entry(type="molecule_type", data={"name": "brain catalyst"})
+sys.exit()
+
+# event = user_client.create_entry(type="molecule_type", data={"name": "brain catalyst"})
 
 # event = user_client.create_entry(type="numerical_data", data={"data": [0.]})
 ####
