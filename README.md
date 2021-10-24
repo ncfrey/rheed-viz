@@ -39,3 +39,10 @@ Run locally with `streamlit run app.py`
 * Pre-processed, dimensionality reduced images are in `./data/` saved as `npz` files. They can be loaded as shown in `Rheed-viz.ipynb`
 * Process AVI movies by installing ffmpeg and doing `ffmpeg -i MovieName.avi -vf  fps=<num_fps>  c01_%04d.jpg -hide_banner`
 * Raw jpgs: https://figshare.com/s/73b8ab6cb131acbbe9d4
+
+### References
+[1] Fabius, Otto, and Joost R. Van Amersfoort. "Variational recurrent auto-encoders." arXiv preprint arXiv:1412.6581 (2014).  
+
+[2] Gliebe, Kimberly, and Alp Sehirlioglu. "Distinct thin film growth characteristics determined through comparative dimension reduction techniques." Journal of Applied Physics 130.12 (2021): 125301.  
+
+[3] Zheng Ren, & Ilija Zeljkovic. (2021). FeSe/SrTiO3(001) RHEED movie [Data set]. Zenodo. https://doi.org/10.5281/zenodo.4725825
