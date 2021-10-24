@@ -3,7 +3,7 @@ from pathlib import Path
 from molar import ClientConfig, Client
 
 # needs to correspond to molarcli install local parameters
-local_address = "http://localhost:8000"
+local_address = "http://557d-198-232-127-62.ngrok.io"
 default_admin_name = "default"
 default_admin_pw = "rheed"
 default_domain = "rheed.com"
@@ -11,34 +11,25 @@ default_domain = "rheed.com"
 default_user_name = "user1"
 
 # name the database here
-database_name = "compchem"
+database_name = "main"
 revision_to_use = database_name + "@head"
 
 # create default admin config
 admin_cfg = ClientConfig(server_url=local_address,
                          email=default_admin_name + "@" + default_domain,
                          password=default_admin_pw,
-                         database_name="main")
+                         database_name=database_name)
 
 # create default user config
 user_cfg = ClientConfig(server_url="http://localhost:8000",
                         email=default_user_name + "@" + default_domain,
                         password=default_admin_pw,
-                        database_name=database_name)
+                        database_name="compchem")
 
 
-# admin_cfg = ClientConfig(server_url="http://localhost:8000",
-#                          email="default@rheed.com",
-#                          password="rheed",
-#                          database_name="main")
 admin_client = Client(admin_cfg)
 
 admin_client.test_token()
-
-# user_cfg = ClientConfig(server_url="http://localhost:8000",
-#                         email="user1@molar.org",
-#                         password="rheed",
-#                         database_name="compchem")
 
 user_client = Client(user_cfg)
 
