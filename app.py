@@ -91,13 +91,17 @@ def draw_manage_data_page():
 # @st.cache(suppress_st_warning=False)
 def draw_analysis_page():
     st.title("Analysis")
+    col1, col2 = st.columns(2)
 
     is_image = [conf["data_type"] == "raw" for conf in all_confomers["metadata"]]
     raw_images = all_confomers[is_image]
     
-    selected_frame = st.select_slider("Frame", options=raw_images.index)
-    selected_image = get_image_from_raw(raw_images["x"][selected_frame], raw_images["metadata"][selected_frame]["shape"])
-    st.image(selected_image, clamp=True)
+    with col1.container():
+        selected_frame = st.select_slider("Frame", options=raw_images.index)
+        selected_image = get_image_from_raw(raw_images["x"][selected_frame], raw_images["metadata"][selected_frame]["shape"])
+        st.image(selected_image, clamp=True)
+
+
 
 previous_version = "0.83.0"
 demo_pages = {
