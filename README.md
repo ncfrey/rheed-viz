@@ -2,6 +2,10 @@
 
 Database, dimensionality reduction, and visualization dashboard for RHEED data
 
+
+### How it works
+![How it works](./assets/howitworks.png)
+
 ### Environment Setup
 To setup the environment, run `conda env update --file env.cpu.yml`, which will create a conda environment called rheed-viz
 
