@@ -8,6 +8,14 @@ from PIL import Image
 import skimage
 import plotly.express as px
 
+from models.vae import VRAE
+from models.utils import plot_clustering, open_data
+
+import pandas as pd
+
+import plotly
+
+
 # needs to correspond to molarcli install local parameters
 local_address = "http://localhost:8000"
 default_admin_name = "default"
@@ -134,11 +142,45 @@ def draw_plot_page():
     )
     st.plotly_chart(fig)
     st.write(f'Spike at frame {np.argmax(np.abs(np.gradient(pca_data[pc_to_col[pc]][7])))}')
+
+def draw_vrae_page():
+    st.title("VRAE")
+
+    # Load PCA and TSNE reduced data from learned embeddings
+    df_zpca = pd.read_csv('data/vrae_zpca.csv')
+    df_ztsne = pd.read_csv('data/vrae_ztsne.csv')
+
+    st.header("Unsupervised time series clustering with variational recurrent autoencoder")
+
+    st.write('PCA on latent representations from VRAE')
+    fig = px.scatter(
+        x=df_zpca['pc1'],
+        y=df_zpca['pc2'],
+        labels={
+            'y': 'PC2',
+            'x': 'PC1'
+        },
+        color=df_zpca['y']
+    )
+    st.plotly_chart(fig)
+
+    st.write('TSNE on latent representations from VRAE')
+    fig = px.scatter(
+        x=df_ztsne['c1'],
+        y=df_ztsne['c2'],
+        labels={
+            'y': 'C2',
+            'x': 'C2'
+        },
+        color=df_ztsne['y']
+    )
+    st.plotly_chart(fig)
     
 def draw_landing_page():
     content = f"""
     # RHEED Analysis Platform
-    *Background and problem.* Reflection high-energy electron diffraction (RHEED) is a popular technique for monitoring the growth of high-quality thin films during molecular beam epitaxy (MBE), a fundamental technique in nanotechnology development. Researchers use tedious, manual tools to analyze RHEED data. Current workflows are slow, non-transferable, and not reproducible.
+    *Background and problem.* Reflection high-energy electron diffraction (RHEED) is a popular technique for monitoring the growth of high-quality thin films during molecular beam epitaxy (MBE), 
+    a fundamental technique in nanotechnology development. Researchers use tedious, manual tools to analyze RHEED data. Current workflows are slow, non-transferable, and not reproducible.
 
     *Aim 1.* Develop a prototype interface where users can upload RHEED images and organize them in a Molar database.
 
@@ -146,13 +188,25 @@ def draw_landing_page():
     """
     st.write(content)
 
+    st.image('assets/howitworks.png')
+
+    references = f"""
+    [1] Fabius, Otto, and Joost R. Van Amersfoort. "Variational recurrent auto-encoders." arXiv preprint arXiv:1412.6581 (2014).
+
+    [2] Gliebe, Kimberly, and Alp Sehirlioglu. "Distinct thin film growth characteristics determined through comparative dimension reduction techniques." Journal of Applied Physics 130.12 (2021): 125301.
+    """
+
+    with st.expander("References"):
+        st.write(references)
+
 previous_version = "0.83.0"
 demo_pages = {
     "About": draw_landing_page,
     # "Session State": lambda: st.write(st.session_state),
     "Manage Data": draw_manage_data_page,
     "Analysis": draw_analysis_page,
-    "Plots": draw_plot_page
+    "Plots": draw_plot_page,
+    "VRAE": draw_vrae_page
 }
 
 st.set_page_config(page_title="rheed-viz") # f"New features in Streamlit {VERSION}")
@@ -163,17 +217,6 @@ intro = f"""
 A data analysis and visualization platform for reflection high-energy electron diffraction (RHEED) data, powered by the MOLAR database.
 """
 
-release_notes = f"""
----
-**Highlights**
-- 🧠 Introducing `st.session_state` and widget callbacks to allow you to add statefulness to your apps. Check out the [blog post](http://blog.streamlit.io/session-state-for-streamlit/)
-**Notable Changes**
-- 🪄 `st.text_input` now has an `autocomplete` parameter to allow password managers to be used
-**Other Changes**
-- Using st.set_page_config to assign the page title no longer appends “Streamlit” to that title ([#3467](https://github.com/streamlit/streamlit/pull/3467))
-- NumberInput: disable plus/minus buttons when the widget is already at its max (or min) value ([#3493](https://github.com/streamlit/streamlit/pull/3493))
-"""
-# End release updates
 
 
 def draw_main_page():
@@ -195,6 +238,8 @@ def draw_main_page():
 
 # Draw sidebar
 pages = list(demo_pages.keys())
+
+st.sidebar.markdown("**Powered by Molar** 🦷")
 
 if len(pages):
     st.sidebar.title("Menu")
