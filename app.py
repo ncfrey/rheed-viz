@@ -98,13 +98,17 @@ def draw_manage_data_page():
 # @st.cache(suppress_st_warning=False)
 def draw_analysis_page():
     st.title("Analysis")
+    col1, col2 = st.columns(2)
 
     is_image = [conf["data_type"] == "raw" for conf in all_confomers["metadata"]]
     raw_images = all_confomers[is_image]
     
-    selected_frame = st.select_slider("Frame", options=raw_images.index)
-    selected_image = get_image_from_raw(raw_images["x"][selected_frame], raw_images["metadata"][selected_frame]["shape"])
-    st.image(selected_image, clamp=True)
+    with col1.container():
+        selected_frame = st.select_slider("Frame", options=raw_images.index)
+        selected_image = get_image_from_raw(raw_images["x"][selected_frame], raw_images["metadata"][selected_frame]["shape"])
+        st.image(selected_image, clamp=True)
+
+
 
 def draw_plot_page():
     st.title("Plots")
@@ -151,12 +155,12 @@ demo_pages = {
     "Plots": draw_plot_page
 }
 
-st.set_page_config(page_title=f"New features in Streamlit {VERSION}")
+st.set_page_config(page_title="rheed-viz") # f"New features in Streamlit {VERSION}")
 
-contributors = []
+contributors = ["Chris Price", "Nathan Frey", "Nathaniel Budijono", "William Chan"]
 
 intro = f"""
-This release launches session state as well as bug fixes and improvements.
+A data analysis and visualization platform for reflection high-energy electron diffraction (RHEED) data, powered by the MOLAR database.
 """
 
 release_notes = f"""
@@ -175,26 +179,24 @@ release_notes = f"""
 def draw_main_page():
     st.write(
         f"""
-        # Welcome to Streamlit {VERSION}! 👋
+        # Welcome to rheed-viz! 👋
         """
     )
 
     st.write(intro)
 
-    st.write(release_notes)
-    st.write(st.session_state)
+    # st.write(release_notes)
+    # st.write(st.session_state)
 
 
-    st.write(admin_client.test_token())
-    st.write(user_client.test_token())
-    st.write(user_client.get_database_information())
+    # st.write(admin_client.test_token())
+    # st.write(user_client.test_token())
+    # st.write(user_client.get_database_information())
 
 # Draw sidebar
 pages = list(demo_pages.keys())
 
 if len(pages):
-    # pages.insert(0, "Release Notes")
-    # st.sidebar.title(f"Streamlit v{VERSION} Demos")
     st.sidebar.title("Menu")
     query_params = st.experimental_get_query_params()
     if "page" in query_params and query_params["page"][0] == "headliner":
