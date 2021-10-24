@@ -1,6 +1,9 @@
 import sys
 from pathlib import Path
 from molar import ClientConfig, Client
+import json
+from pandas.core import frame
+import numpy as np
 
 # needs to correspond to molarcli install local parameters
 local_address = "http://557d-198-232-127-62.ngrok.io"
@@ -21,7 +24,7 @@ admin_cfg = ClientConfig(server_url=local_address,
                          database_name=database_name)
 
 # create default user config
-user_cfg = ClientConfig(server_url="http://localhost:8000",
+user_cfg = ClientConfig(server_url=local_address,
                         email=default_user_name + "@" + default_domain,
                         password=default_admin_pw,
                         database_name="compchem")
@@ -46,11 +49,44 @@ import streamlit as st
 
 VERSION = ".".join(st.__version__.split(".")[:2])
 
+# All data are represented as type conformer
+# Cache results of the expensive query in st.session_state
+if "conformer_data" not in st.session_state:
+    st.session_state["conformer_data"] = user_client.query_database(
+        types='conformer'
+    )
+all_confomers = st.session_state["conformer_data"]
+
+
+# @st.cache(suppress_st_warning=True)
+def get_image_from_raw(raw, shp):
+    """
+    Return a m by n image from a one-dimensional numpy array
+    """
+    #print(f"raw: {raw}")
+    raw_np = np.asarray(raw)
+    #print(raw_np)
+    ret = raw_np.reshape(shp)
+    print(shp)
+    return ret
+
+def draw_analysis_page():
+    st.title("Analysis")
+
+    is_image = [conf["data_type"] == "raw" for conf in all_confomers["metadata"]]
+    raw_images = all_confomers[is_image]
+
+    frame_selected = st.select_slider("Frame", options=raw_images.index)
+    # st.write(raw_images.columns)
+    st.write(raw_images["metadata"][frame_selected]["shape"])
+    selected_image = get_image_from_raw(raw_images["x"][frame_selected], raw_images["metadata"][frame_selected]["shape"])
+    # st.write(selec)
+    st.image(selected_image, clamp=True)
 
 previous_version = "0.83.0"
 demo_pages = {
-    "Session State": 0,
-    "Analysis": 1
+    "Session State": lambda: None,
+    "Analysis": draw_analysis_page
 }
 
 st.set_page_config(page_title=f"New features in Streamlit {VERSION}")
@@ -84,10 +120,15 @@ def draw_main_page():
     st.write(intro)
 
     st.write(release_notes)
+    st.write(st.session_state)
+
 
     st.write(admin_client.test_token())
     st.write(user_client.test_token())
     st.write(user_client.get_database_information())
+
+
+
 
 
 # Draw sidebar
