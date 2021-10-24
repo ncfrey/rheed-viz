@@ -1,5 +1,37 @@
 import sys
 from pathlib import Path
+from molar import ClientConfig, Client
+
+# needs to correspond to molarcli install local parameters
+local_address = "http://557d-198-232-127-62.ngrok.io"
+default_admin_name = "default"
+default_admin_pw = "rheed"
+default_domain = "rheed.com"
+# other params
+default_user_name = "user1"
+
+# name the database here
+database_name = "main"
+revision_to_use = database_name + "@head"
+
+# create default admin config
+admin_cfg = ClientConfig(server_url=local_address,
+                         email=default_admin_name + "@" + default_domain,
+                         password=default_admin_pw,
+                         database_name=database_name)
+
+# create default user config
+user_cfg = ClientConfig(server_url="http://localhost:8000",
+                        email=default_user_name + "@" + default_domain,
+                        password=default_admin_pw,
+                        database_name="compchem")
+
+
+admin_client = Client(admin_cfg)
+
+admin_client.test_token()
+
+user_client = Client(user_cfg)
 
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
@@ -18,6 +50,7 @@ VERSION = ".".join(st.__version__.split(".")[:2])
 previous_version = "0.83.0"
 demo_pages = {
     "Session State": 0,
+    "Analysis": 1
 }
 
 st.set_page_config(page_title=f"New features in Streamlit {VERSION}")
@@ -51,6 +84,10 @@ def draw_main_page():
     st.write(intro)
 
     st.write(release_notes)
+
+    st.write(admin_client.test_token())
+    st.write(user_client.test_token())
+    st.write(user_client.get_database_information())
 
 
 # Draw sidebar
