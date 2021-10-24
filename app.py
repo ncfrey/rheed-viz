@@ -9,7 +9,7 @@ import skimage
 import plotly.express as px
 
 # needs to correspond to molarcli install local parameters
-local_address = "http://557d-198-232-127-62.ngrok.io"
+local_address = "http://localhost:8000"
 default_admin_name = "default"
 default_admin_pw = "rheed"
 default_domain = "rheed.com"
