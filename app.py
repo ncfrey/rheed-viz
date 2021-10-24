@@ -5,6 +5,7 @@ import json
 from pandas.core import frame
 import numpy as np
 from PIL import Image
+import skimage
 
 # needs to correspond to molarcli install local parameters
 local_address = "http://557d-198-232-127-62.ngrok.io"
@@ -59,37 +60,49 @@ if "conformer_data" not in st.session_state:
 all_confomers = st.session_state["conformer_data"]
 
 
-# @st.cache(suppress_st_warning=True)
 def get_image_from_raw(raw, shp):
     """
     raw: 1 dimensional numpy array
-    shp: three element iterable containing original image shape
+    shp: iterable containing original image shape
     Return a the image given by the one-dimensional numpy array
     """
     raw_np = np.asarray(raw)
-    # raw_layer_masks = [np.arange(0, raw_np.shape[0], 1) % shp[-1] == offset for offset in range(shp[-1])]
-    # raw_layers = [raw_np[mask].reshape((shp[0], shp[1])) for mask in raw_layer_masks] 
-    # st.write([rl.shape for rl in raw_layers])
-    # ret = np.asarray(raw_layers)
-    # ret = np.swapaxes(ret, 0, 2)
-
-    # st.write(ret.shape)
     ret = raw_np.reshape(shp)
-    return ret # ret_im
+    ret = ret.astype(np.ubyte)
+    return ret
 
+def process_image(file, formdata={}):
+    import time
+    time.sleep(2)
+
+def draw_manage_data_page():
+    st.title("Manage Data")
+    st.header("Upload Data")
+    # st.text("Image names must be ordered")
+    uploaded_files = st.file_uploader("Choose JPG files with ordered names", type="jpg", accept_multiple_files=True)
+    process_progress_bar = st.progress(0)
+    with st.spinner("Processing files..."):
+        for idx, file in enumerate(uploaded_files):
+            process_image(file)
+            process_progress_bar.progress((idx + 1) / len(uploaded_files))
+
+
+
+# @st.cache(suppress_st_warning=False)
 def draw_analysis_page():
     st.title("Analysis")
 
     is_image = [conf["data_type"] == "raw" for conf in all_confomers["metadata"]]
     raw_images = all_confomers[is_image]
-
+    
     selected_frame = st.select_slider("Frame", options=raw_images.index)
     selected_image = get_image_from_raw(raw_images["x"][selected_frame], raw_images["metadata"][selected_frame]["shape"])
     st.image(selected_image, clamp=True)
 
 previous_version = "0.83.0"
 demo_pages = {
-    "Session State": lambda: None,
+    "Session State": lambda: st.write(st.session_state),
+    "Manage Data": draw_manage_data_page,
     "Analysis": draw_analysis_page
 }
 
